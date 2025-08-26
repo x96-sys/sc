@@ -1,0 +1,487 @@
+@startuml IR
+package sc {
+  package ast {
+
+    class SC {
+      +fly Fly
+    }
+    SC --> Fly
+
+    class Fly {
+      +strand Strand
+    }
+    Fly --> Strand
+
+    class Strand {
+      +genome Genome[]
+    }
+    Strand --> Genome
+
+    enum Genome {
+      Anatomy
+      Behavior
+    }
+    Genome --> Anatomy
+    Genome --> Behavior
+
+    enum Anatomy {
+      Bug
+    }
+    Anatomy --> Bug
+
+    enum Behavior {
+' Statement
+      Beat
+' Assign
+      Pollinate
+' Oop
+      Trace
+    }
+    Behavior --> Beat
+    Behavior --> Pollinate
+    Behavior --> Trace
+
+    enum Beat {
+' IF
+        Sprout
+' WHILE
+        Swirl
+' FOR
+        Crawl
+' RETURN
+        Nectar
+    }
+    Beat --> Sprout
+    Beat --> Nectar
+    Beat --> Swirl
+    Beat --> Crawl
+
+    class Trace {
+      +forager Forager
+      +courses Course[]
+    }
+    Trace --> Forager
+    Trace --> Course
+
+    enum Forager {
+      Specie
+      Tag
+      Literal
+    }
+    Forager --> Literal
+    Forager --> Tag
+    Forager --> Specie
+
+    enum Course {
+        Carrier
+        Catalysis
+    }
+    Course --> Carrier
+    Course --> Catalysis
+
+    class Pollinate {
+      +tag Tag
+      +trace Trace
+    }
+    Pollinate --> Tag
+    Pollinate --> Trace
+
+    class Nectar {
+      +trace Trace
+    }
+    Nectar --> Trace
+
+    class Sprout {
+      +condition Trace
+      +matrix Matrix
+' elsif
+      +splices Splice[]
+' else
+      +den Matrix?
+    }
+    Sprout --> Trace
+    Sprout --> Matrix
+    Sprout --> Splice
+
+    class Splice {
+      +condition Trace
+      +matrix Matrix
+    }
+    Splice --> Trace
+    Splice --> Matrix
+
+    class Swirl {
+      +condition Trace
+      +matrix Matrix
+    }
+    Swirl --> Trace
+    Swirl --> Matrix
+
+    class Crawl {
+      +tag Tag
+      +trace Trace
+      +matrix Matrix
+    }
+    Crawl --> Tag
+    Crawl --> Trace
+    Crawl --> Matrix
+
+    class Matrix {
+      +signals Signal[]
+    }
+    Matrix --> Signal
+
+    enum Signal {
+        behavior
+    }
+    Signal --> Behavior
+
+    class Catalysis {
+      +tag Tag
+      +carrier Carrier?
+    }
+    Catalysis --> Tag
+    Catalysis --> Carrier
+
+    class Carrier {
+      +transport Transport?
+    }
+    Carrier --> Transport
+
+    enum Transport {
+        Binds
+        Sequence
+    }
+    Transport --> Binds
+    Transport --> Sequence
+
+    class Binds {
+      +binds Bind[]
+    }
+    Binds --> Bind
+
+    class Bind {
+      +tag Tag
+      +trace Trace
+    }
+    Bind --> Tag
+    Bind --> Trace
+
+    class Sequence {
+      +traces Trace[]
+    }
+    Sequence --> Trace
+
+    class Bug {
+      +specie Specie
+      +genes Gene[]
+      +ethics Ethics[]
+    }
+    Bug --> Specie
+    Bug --> Gene
+    Bug --> Ethics
+
+    class Gene {
+      +tag Tag
+      +specie Specie
+    }
+    Gene --> Tag
+    Gene --> Specie
+
+    class Ethics {
+      +tag Tag
+      +signature Signature?
+      +feedback Specie?
+      +matrix Matrix?
+    }
+    Ethics --> Tag
+    Ethics --> Signature
+    Ethics --> Specie
+    Ethics --> Matrix
+
+    class Signature {
+      +intakes Intake[]
+    }
+    Signature --> Intake
+
+    class Intake {
+      +tag Tag
+      +specie Specie
+    }
+    Intake --> Tag
+    Intake --> Specie
+
+    enum Literal {
+        Bit
+        Hex
+        Int
+        Str
+        Decimal
+    }
+
+    class Specie {
+      +raw Str
+    }
+
+    class Tag {
+      +raw Str
+    }
+  }
+}
+package ir {
+  class IR {
+    tree Tree
+  }
+  IR --> Tree
+
+  class Tree {
+    branches Branch[]
+  }
+  Tree --> Branch
+
+  class Branch {
+    hives Hive[]
+  }
+  Branch --> Hive
+
+  enum Hive {
+    Alveolus
+    Bee
+  }
+  Hive --> Alveolus
+  Hive --> Bee
+
+  enum Bee {
+    echo Echo
+    primor Primor
+    flora Flora
+  }
+  Bee --> Echo
+  Bee --> Primor
+
+  class Primor {
+    raw Word
+  }
+
+  enum Alveolus {
+    Larvie
+  }
+  Alveolus --> Larvie
+
+  enum Flora {
+    Int
+    Str
+    Bool
+    Bug
+  }
+  enum Seal {
+' NotNull
+      Vital
+' PrimaryKey
+      Core
+' Unique
+      Root
+  }
+
+  class Larvie {
+    primor Primor
+    casts Casts[]
+    instincts Instinct[]
+  }
+  Larvie --> Primor
+  Larvie --> Casts
+  Larvie --> Instinct
+
+  class Casts {
+    primor Primor
+    flora Flora
+    seal Seal
+  }
+  Casts --> Primor
+  Casts --> Flora
+  Casts --> Seal
+
+  class Instinct {
+    primor Primor
+    echo Echo
+    rune Rune
+    codex Codex
+  }
+  Instinct --> Echo
+  Instinct --> Rune
+  Instinct --> Codex
+  class Codex {
+    nexus Nexus[]
+  }
+  Codex --> Nexus
+
+  enum Nexus {
+    Routine
+  }
+  Nexus --> Routine
+
+  enum Routine {
+    Assignment
+    Operation
+    Harvest
+    Conditional
+    Loop
+    Iterator
+  }
+  Routine --> Assignment
+  Routine --> Operation
+  Routine --> Harvest
+  Routine --> Conditional
+  Routine --> Loop
+  Routine --> Iterator
+
+  class Assignment {
+    primor Primor
+    operation Operation
+  }
+  Assignment --> Primor
+  Assignment --> Operation
+
+  class Operation {
+    bee Bee
+    impulse Impulse
+  }
+  Operation --> Bee
+  Operation --> Impulse
+
+  enum Impulse {
+    Vein
+    Spark
+  }
+  Impulse --> Vein
+  Impulse --> Spark
+  class Vein {
+    flow Flow
+  }
+  Vein --> Flow
+
+  class Spark {
+    primor Primor
+    vein Vein
+  }
+  Spark --> Primor
+  Spark --> Vein
+
+  enum Flow {
+    Synapse
+    Stream
+  }
+  Flow --> Synapse
+  Flow --> Stream
+
+  class Stream {
+    operations Operation[]
+  }
+  Stream --> Operation
+
+  class Synapse {
+    knots Knot[]
+  }
+  Synapse --> Knot
+
+  class Knot {
+    +primor Primor
+    +operation Operation
+  }
+  Knot --> Primor
+  Knot --> Operation
+
+  class Harvest {
+    operation Operation
+  }
+  Harvest --> Operation
+  class Conditional {
+    condition Operation
+    codex Codex
+    drift Drift[]
+    fall Codex
+  }
+  Conditional --> Operation
+  Conditional --> Codex
+  Conditional --> Drift
+
+  class Drift {
+    condition Operation
+    codex Codex
+  }
+  Drift --> Operation
+  Drift --> Codex
+
+  class Loop {
+    condition Operation
+    codex Codex
+  }
+  Loop --> Operation
+  Loop --> Codex
+  class Iterator {
+    primor Primor
+    operation Operation
+    codex Codex
+  }
+  Iterator --> Primor
+  Iterator --> Operation
+  Iterator --> Codex
+
+  class Rune {
+    insignias Insignia[]
+  }
+  Rune --> Insignia
+
+  class Insignia {
+    primor Primor
+    echo Echo
+  }
+  Insignia --> Primor
+  Insignia --> Echo
+
+  class Echo {
+    raw Word
+  }
+
+}
+
+' converted to
+'sc.ast.SC -[dashed]-> ir.IR
+'sc.ast.Fly -[dashed]-> ir.Tree
+'sc.ast.Strand -[dashed]-> ir.Branch
+'sc.ast.Genome -[dashed]-> ir.Hive
+'sc.ast.Anatomy -[dashed]-> ir.Alveolus
+'sc.ast.Bug -[dashed]-> ir.Larvie
+'sc.ast.Gene -[dashed]-> ir.Casts
+'sc.ast.Tag -[dashed]-> ir.Primor
+'sc.ast.Signature -[dashed]-> ir.Rune
+'sc.ast.Specie -[dashed]-> ir.Echo
+sc.ast.Matrix -[dashed]-> ir.Codex
+'sc.ast.Signal -[dashed]-> ir.Nexus
+'sc.ast.Behavior -[dashed]-> ir.Routine
+'sc.ast.Pollinate -[dashed]-> ir.Assignment
+sc.ast.Trace -[dashed]-> ir.Operation
+'sc.ast.Literal -[dashed]-> ir.Flora
+'sc.ast.Catalysis -[dashed]-> ir.Spark
+'sc.ast.Carrier -[dashed]-> ir.Vein
+'sc.ast.Transport -[dashed]-> ir.Flow
+'sc.ast.Binds -[dashed]-> ir.Synapse
+'sc.ast.Bind -[dashed]-> ir.Knot
+'sc.ast.Sequence -[dashed]-> ir.Stream
+'sc.ast.Nectar -[dashed]-> ir.Harvest
+'sc.ast.Swirl -[dashed]-> ir.Loop
+'sc.ast.Crawl -[dashed]-> ir.Iterator
+sc.ast.Sprout -[dashed]-> ir.Conditional
+sc.ast.Splice -[dashed]-> ir.Drift
+'sc.ast.Ethics -[dashed]-> ir.Instinct
+
+sc.ast.Intake -[dashed]-> ir.Insignia
+sc.ast.Course -[dashed]-> ir.Impulse
+sc.ast.Emitter -[dashed]-> ir.Bee
+
+
+
+
+
+
+@enduml

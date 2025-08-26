@@ -1,0 +1,282 @@
+@startuml IR
+class IR {
+  tree Tree
+}
+IR --> Tree
+
+class Tree {
+  branches Branch[]
+}
+Tree --> Branch
+
+class Branch {
+  hives Hive[]
+}
+Branch --> Hive
+
+enum Hive {
+  Alveolus
+  Bee
+}
+Hive --> Alveolus
+Hive --> Bee
+
+enum Bee {
+  echo Echo
+  unum Unum
+  flora Flora
+}
+Bee --> Flora
+class raw.Unum {
+  raw Word
+}
+
+enum Alveolus {
+' bug
+  Larvie
+' enum
+  Honey
+}
+Alveolus --> Larvie
+Alveolus --> enum.Honey
+
+class enum.Honey {
+    flavor Str
+    sugars Sugar[]
+}
+enum.Honey --> enum.Sugar
+
+class enum.Sugar {
+    crystal Str
+    isomerism Isomerism?
+}
+enum.Sugar --> enum.Isomerism
+
+enum enum.Isomerism {
+  Filament(Strain[])
+  Helix(Helix[])
+}
+enum.Isomerism --> enum.Helix
+
+class enum.Helix {
+   sigil Str
+   strain Str
+}
+
+enum Flora {
+  Int
+  Str
+  Bool
+  Bug
+}
+enum Seal {
+' NotNull
+    Vital
+' PrimaryKey
+    Core
+' Unique
+    Root
+}
+
+class Larvie {
+  +unum Unum
+  +casts Casts[]
+  +instincts Instinct[]
+  +brood Brood?
+}
+Larvie --> Casts
+Larvie --> Instinct
+Larvie --> relationship.Brood
+
+' MESH START ============
+package relationship {
+    class Brood {
+      layout Layout
+      cadence Cadence?
+    }
+    Brood --> Layout
+    Brood --> Cadence
+
+    enum Layout {
+' sequence
+        Spool(Pod)
+' choice
+        Fray(Pod)
+    }
+    Layout --> Pod
+
+    enum Cadence {
+' ?
+        Optional
+' *
+        ZeroOrMore
+' +
+        OneOrMore
+    }
+
+    class Pod {
+      flavor Flavor
+      cadence Cadence?
+    }
+    Pod --> Flavor
+    Pod --> Cadence
+
+    enum Flavor {
+      Larvie(Larvie)
+      Switch(Pod[])
+      Lineage(Pod[])
+    }
+    Flavor --> Pod
+}
+relationship.Flavor --> Larvie
+' MESH END ==============
+
+class Casts {
+  unum Unum
+  flora Flora
+  seal Seal
+}
+Casts --> Flora
+Casts --> Seal
+
+class Instinct {
+  unum Unum
+  echo Echo
+  rune Rune
+  codex Codex
+}
+Instinct --> Rune
+Instinct --> Codex
+class Codex {
+  nexus Nexus[]
+}
+Codex --> Nexus
+
+enum Nexus {
+  Routine
+}
+Nexus --> Routine
+
+enum Routine {
+  Assignment
+  Operation
+  Harvest
+  Conditional
+  Loop
+  Iterator
+}
+Routine --> Assignment
+Routine --> Operation
+Routine --> Harvest
+Routine --> Conditional
+Routine --> Loop
+Routine --> Iterator
+
+class Assignment {
+  unum Unum
+  operation Operation
+}
+Assignment --> Operation
+class Operation {
+  bee Bee
+  impulse Impulse
+}
+Operation --> Bee
+Operation --> Impulse
+
+enum Impulse {
+  Vein
+  Spark
+}
+Impulse --> Vein
+Impulse --> Spark
+class Vein {
+  flow Flow
+}
+Vein --> Flow
+
+class Spark {
+  unum Unum
+  vein Vein
+}
+Spark --> Vein
+
+enum Flow {
+  Synapse
+  Stream
+}
+Flow --> Synapse
+Flow --> Stream
+
+class Stream {
+  operations Operation[]
+}
+Stream --> Operation
+
+class Synapse {
+  knots Knot[]
+}
+Synapse --> Knot
+
+class Knot {
+  +unum Unum
+  +operation Operation
+}
+Knot --> Operation
+
+class Harvest {
+  operation Operation
+}
+Harvest --> Operation
+class Conditional {
+  condition Operation
+  codex Codex
+  drift Drift[]
+  fall Fall
+}
+Conditional --> Operation
+Conditional --> Codex
+Conditional --> Drift
+Conditional --> Fall
+
+class Drift {
+  condition Operation
+  codex Codex
+}
+Drift --> Operation
+Drift --> Codex
+
+class Fall {
+  codex Codex
+}
+Fall --> Codex
+
+class Loop {
+  condition Operation
+  codex Codex
+}
+Loop --> Operation
+Loop --> Codex
+class Iterator {
+  unum Unum
+  operation Operation
+  codex Codex
+}
+Iterator --> Operation
+Iterator --> Codex
+
+class Rune {
+  insignias Insignia[]
+}
+Rune --> Insignia
+
+class Insignia {
+  unum Unum
+  echo Echo
+}
+
+class raw.Echo {
+  raw Word
+}
+
+@enduml

@@ -1,0 +1,252 @@
+@startuml AST for SC DSL
+
+title AST for SC DSL
+'!theme crt-amber
+'hide circle
+
+package ast {
+
+    class main.SC {
+        +fly Fly
+    }
+    main.SC --> main.Fly
+
+    class main.Fly {
+        +strand Strand
+    }
+    main.Fly --> main.Strand
+
+    class main.Strand {
+        +genome Genome[]
+    }
+    main.Strand --> main.Genome
+
+    enum main.Genome {
+        Anatomy
+        Behavior
+    }
+    main.Genome -[dashed]-> Anatomy
+    main.Genome -[dashed]-> source.core.Behavior
+
+    enum Anatomy {
+        Bug
+        Totem
+    }
+    Anatomy --> obj.Bug
+    Anatomy --> enum.Totem
+    class enum.Totem {
+        +insignia Str
+        +folklores Folklore[]
+    }
+    Totem --> enum.Folklore
+
+
+    class enum.Folklore {
+        +prophecy Str
+        +runes Runes?
+    }
+    Folklore --> enum.Runes
+
+    enum enum.Runes {
+        Whispers(Specie[])
+        Invocations(Entity[])
+    }
+    Runes --> enum.Entity
+
+    class enum.Entity {
+        +primor Str
+        +specie Str
+    }
+
+    enum source.core.Behavior {
+' Statement
+        Beat
+' Assign
+        Pollinate
+' Oop
+        Trace
+    }
+    source.core.Behavior --> source.core.Pollinate
+    source.core.Behavior -[dashed]-> source.stmt.Beat
+    source.core.Behavior -[dashed]-> source.oop.Trace
+
+    enum source.stmt.Beat {
+' IF
+        Sprout
+' WHILE
+        Swirl
+' FOR
+        Crawl
+' RETURN
+        Nectar
+    }
+    source.stmt.Beat --> source.stmt.if.Sprout
+    source.stmt.Beat --> source.stmt.Nectar
+    source.stmt.Beat --> source.stmt.Swirl
+    source.stmt.Beat --> source.stmt.Crawl
+
+    class source.oop.Trace {
+        +forager Forager
+        +courses Course[]
+    }
+    source.oop.Trace -[dashed]-> source.bee.Forager
+    source.oop.Trace --> source.oop.Course
+
+    enum source.bee.Forager {
+        Specie
+        Primor
+        Literal
+        SelfRef
+    }
+    source.bee.Forager --> source.bee.Literal
+    source.bee.Forager --> source.bee.SelfRef
+
+    enum source.oop.Course {
+        Carrier
+        Catalysis
+    }
+    source.oop.Course --> source.oop.Carrier
+    source.oop.Course --> source.oop.Catalysis
+
+    class source.core.Pollinate {
+        +primor Str
+        +trace Trace
+    }
+    source.core.Pollinate -[dashed]-> source.oop.Trace
+
+    class source.stmt.Nectar {
+        +trace Trace
+    }
+    source.stmt.Nectar -[dashed]-> source.oop.Trace
+
+    class source.stmt.if.Sprout {
+        +condition Trace
+        +matrix Matrix
+' elsif
+        +splices Splice[]
+' else
+        +den Matrix?
+    }
+    source.stmt.if.Sprout -[dashed]-> source.oop.Trace
+    source.stmt.if.Sprout -[dashed]-> source.core.Matrix
+    source.stmt.if.Sprout --> source.stmt.if.Splice
+
+    class source.stmt.if.Splice {
+        +condition Trace
+        +matrix Matrix
+    }
+    source.stmt.if.Splice -[dashed]-> source.oop.Trace
+    source.stmt.if.Splice -[dashed]-> source.core.Matrix
+
+    class source.stmt.Swirl {
+        +condition Trace
+        +matrix Matrix
+    }
+    source.stmt.Swirl -[dashed]-> source.oop.Trace
+    source.stmt.Swirl -[dashed]-> source.core.Matrix
+
+    class source.stmt.Crawl {
+        +primor Str
+        +trace Trace
+        +matrix Matrix
+    }
+    source.stmt.Crawl -[dashed]-> source.oop.Trace
+    source.stmt.Crawl -[dashed]-> source.core.Matrix
+
+    class source.core.Matrix {
+        +signals Signal[]
+    }
+    source.core.Matrix --> source.core.Signal
+
+    enum source.core.Signal {
+        behavior
+    }
+    source.core.Signal --> source.core.Behavior
+
+    class source.oop.Catalysis {
+        +primor Str
+        +carrier Carrier?
+    }
+    source.oop.Catalysis --> source.oop.Carrier
+
+    class source.oop.Carrier {
+        +transport Transport?
+    }
+    source.oop.Carrier --> source.oop.Transport
+
+    enum source.oop.Transport {
+        Binds
+        Sequence
+    }
+    source.oop.Transport --> source.oop.Binds
+    source.oop.Transport --> source.oop.Sequence
+
+    class source.oop.Binds {
+        +binds Bind[]
+    }
+    source.oop.Binds --> source.oop.Bind
+
+    class source.oop.Bind {
+        +primor Str
+        +trace Str
+    }
+
+    class source.oop.Sequence {
+        +oops Trace[]
+    }
+    source.oop.Sequence --> source.oop.Trace
+
+    class obj.Bug {
+        +specie Str
+        +genes Gene[]
+        +ethics Ethics[]
+    }
+    Bug --> obj.method.Ethics
+    Bug --> obj.Gene
+
+    class obj.Gene {
+        +primor Str
+        +specie Str
+    }
+
+    class obj.method.Ethics {
+        +primor Str
+        +manifest Manifest?
+        +feedback Str?
+        +matrix Matrix?
+    }
+    Ethics -[dashed]-> source.core.Matrix
+    Ethics --> obj.method.Manifest
+
+    enum obj.method.Manifest {
+        Pacts(Pact[])
+        March(Specie[]))
+    }
+    Manifest --> obj.method.Pact
+
+    class obj.method.Pact {
+        +primor Str
+        +specie Str
+    }
+    enum source.bee.Literal {
+        Bit
+        Hex
+        Int
+        Str
+        Decimal
+    }
+
+    class source.bee.SelfRef {
+        +raw Str
+    }
+}
+
+package parser {
+    class Parser
+    class Tree
+
+    Tree --> Parser
+}
+parser.Tree -[dashed]-> ast.main.SC
+
+@enduml
